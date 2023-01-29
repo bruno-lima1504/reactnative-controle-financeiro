@@ -21,7 +21,13 @@ export default function AuthRoutes(){
                 name="SignUp"
                 component={SignUp}
                 options={{
-                    headerShown: false,
+                    title:"Voltar",
+                    headerStyle:{
+                        backgroundColor: '#3B3DBF',
+                        borderBottomWidth: 1,
+                        borderBottomColor: '#00B94A'
+                    },
+                    headerTintColor: '#FFF'
                 }}
             />
         </AuthStack.Navigator>

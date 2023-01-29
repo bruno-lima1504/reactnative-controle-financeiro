@@ -1,5 +1,4 @@
 import React from "react";
-import { SafeAreaView, StatusBar, Text, View, TouchableOpacity } from "react-native";
 
 import { Background, Container, Logo, AreaInput, Input, SubmiteButton, SubmiteText, Link, LinkText } from './styles';
 
