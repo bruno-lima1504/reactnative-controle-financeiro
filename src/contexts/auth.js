@@ -13,17 +13,17 @@ function AuthProvider({ children }){
   const navigation = useNavigation();
 
 
-  async function signUp(email, password, name){
+  async function signUp(name, email, password ){
     try{
       const response = await api.post('/users', {
        name: name,
        password: password,
        email: email,
-      })
+      })          
       navigation.goBack();
       
     }catch(err){
-      console.log("ERRO AO CADASTRAR", err)
+      console.log("ERRO AO CADASTRAR", err)      
     }
   }
 
