@@ -13,8 +13,7 @@ export default function Header({ title }){
         <C.Container>
             <C.ButtonMenu onPress={ ( ) => navigation.openDrawer() } >
                 <Feather name="menu" color={'#000'} size={35}/>
-            </C.ButtonMenu>
-            
+            </C.ButtonMenu>            
             { title && (<C.Title>{title}</C.Title>)}
         </C.Container>
     )
