@@ -1,26 +1,24 @@
 import React, { useContext, useEffect, useState } from "react";
-import { TouchableOpacity } from "react-native";
-
-import { AuthContext } from '../../contexts/auth'
-import Header from "../../components/Header";
+import { TouchableOpacity, Modal } from "react-native";
 
 import api from "../../services/api";
-import { format } from "date-fns";
-
 import { useIsFocused } from '@react-navigation/native'
 
 import BalanceItem from "../../components/BalanceItem";
+import HistoryList from "../../components/HistoryList";
+import Header from "../../components/Header";
+import CalendarModal from "../../components/CalendarModal";
 
 import * as C from './styles';
 import Feather from "react-native-vector-icons/Feather"
-import HistoryList from "../../components/HistoryList";
+import { format } from "date-fns";
 
 
 export default function Home(){
     const isFocused = useIsFocused();
     const [listBalance, setListBalance] = useState([]);
     const[movements, setMovements] = useState([]);
-
+    const [modalVisible, setModalVisible] = useState(false)
     const [dateMovements, setDateMovements] = useState(new Date())
 
 
@@ -28,8 +26,11 @@ export default function Home(){
 
         let isActive = true;
         
-        async function getMovements(){
-            let dateFormated = format(dateMovements, 'dd/MM/yyyy');
+        async function getMovements(){           
+            let date = new Date(dateMovements);
+            let onlyDate = date.valueOf() + date.getTimezoneOffset() * 60 * 1000;
+            let dateFormated = format(onlyDate, 'dd/MM/yyyy');
+            console.log(dateFormated);
             
             const receives = await api.get('/receives', {
                 params:{
@@ -54,9 +55,25 @@ export default function Home(){
         return () => isActive = false;
 
 
-    },[isFocused])
+    },[isFocused, dateMovements])
 
+    async function handleDelete(id){
+        try{
+            await api.delete('/receives/delete', {
+                params:{
+                    item_id: id
+                }
+            })
+            setDateMovements(new Date())            
+        }catch(err){
+            console.log(err);
+        }
+    }
 
+    function filterDateMovements(dateSelected){        
+        setDateMovements(dateSelected);      
+    }
+    
     return(
         <C.Background>
             <Header title="Minhas movimentações" />
@@ -68,18 +85,33 @@ export default function Home(){
                 renderItem={ ({ item })=> ( <BalanceItem data={item} /> ) }
             />
             <C.Area>
-                <TouchableOpacity>
-                    <Feather name="calendar" color={'#121212'} size={30}/>
+                <TouchableOpacity onPress={() => setModalVisible(true)}>
+                    <Feather 
+                        name="calendar" 
+                        color={'#121212'} 
+                        size={30}
+                    />
                 </TouchableOpacity>
                 <C.Title>Ultimas movimentações</C.Title>
             </C.Area>
             <C.List
                 data={movements}
                 keyExtractor= { item => item.id }
-                renderItem={ ({ item }) => <HistoryList data={item} />  }
+                renderItem={ ({ item }) => <HistoryList data={item} deleteItem={handleDelete} />  }
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{ paddingBottom: 20 }}
             />
+
+            <Modal 
+                visible={modalVisible} 
+                animationType="fade" 
+                transparent={true} 
+            >
+                <CalendarModal
+                    setVisible={ () => setModalVisible(false) }
+                    handleFilter={ filterDateMovements }
+                />
+            </Modal>
         </C.Background>
     )
 }
