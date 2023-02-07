@@ -1,8 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Platform, ActivityIndicator } from "react-native";
 
-
-import { Background, Container, AreaInput, Input, SubmiteButton, SubmiteText } from './styles';
+import * as C from './styles';
 
 import { AuthContext } from "../../contexts/auth";
 
@@ -23,46 +22,46 @@ export default function SignUp() {
     }
 
     return (
-        <Background>
-            <Container
+        <C.Background>
+            <C.Container
                 behavior={Platform.OS === 'ios' ? 'padding' : ''}
                 enabled
             >
-                <AreaInput>
-                    <Input
+                <C.AreaInput>
+                    <C.Input
                         placeholder="Seu nome"
                         value={name}
                         onChangeText={(text) => setName(text) }
                     />
-                </AreaInput>
-                <AreaInput>
-                    <Input
+                </C.AreaInput>
+                <C.AreaInput>
+                    <C.Input
                         placeholder="Seu email"
                         value={email}
                         onChangeText={(text) => setEmail(text) }
                     />
-                </AreaInput>  
-                <AreaInput>  
-                    <Input
+                </C.AreaInput>  
+                <C.AreaInput>  
+                    <C.Input
                         placeholder="Senha"
                         value={password}
                         onChangeText={(text) => setPassword(text) }
                         secureTextEntry= {true} 
                     />
-                </AreaInput>
+                </C.AreaInput>
 
-                <SubmiteButton onPress={handleSignUp}>
+                <C.SubmiteButton onPress={handleSignUp}>
                     {
                         loadingAuth ? (
                             <ActivityIndicator size={20} color="#FFF" />
                         ) : (
-                            <SubmiteText>Cadastrar</SubmiteText>
+                            <C.SubmiteText>Cadastrar</C.SubmiteText>
                         )
                     }                    
-                </SubmiteButton>
+                </C.SubmiteButton>
 
-            </Container>
-        </Background>
+            </C.Container>
+        </C.Background>
 
     )
 }

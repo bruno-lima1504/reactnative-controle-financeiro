@@ -1,13 +1,14 @@
 import React, {useState} from "react";
 import { SafeAreaView, TouchableWithoutFeedback, Keyboard, Alert } from "react-native";
 
-import * as C from './styles'
 import api from '../../services/api'
-import { format } from "date-fns";
+import { useNavigation } from "@react-navigation/native";
 
 import Header from '../../components/Header'
 import RegisterTypes from "../../components/RegisterTypes";
-import { useNavigation } from "@react-navigation/native";
+
+import * as C from './styles'
+import { format } from "date-fns";
 
 export default function New(){
     const navigation = useNavigation();
